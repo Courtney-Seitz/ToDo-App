@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+
 const form = document.querySelector("form");
 const todoList = document.querySelector("#todo-list");
 const savedToDos = JSON.parse(localStorage.getItem("todos")) || [];
