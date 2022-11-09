@@ -1,21 +1,45 @@
 const form = document.querySelector("form");
 const todoList = document.querySelector("#todo-list");
 
+const savedToDos = JSON.parse(localStorage.getItem("todos")) || [];
+for (let i = 0; i < savedToDos.length; i++) {
+    let newToDo = document.querySelector("#todo");
+    let newLi = document.createElement("li");
+    newLi.innerText = savedToDos[i].newToDo;
+    newLi.isCompleted - savedToDos[i].isCompleted ? true : false;
+    if (newLi.isCompleted) {
+        newLi.style.textDecoration = "line-through";
+    } 
+    const newBtn = document.createElement("button");
+    newBtn.innerText = "Delete";
+    newLi.append(newBtn);
+    todoList.append(newLi);
+}
+
 form.addEventListener("submit", function(e) {
     e.preventDefault();
     const newToDo = document.querySelector("#todo");
     const newLi = document.createElement("li");
-    const newBtn = document.createElement("button");
     newLi.innerText = newToDo.value;
+    const newBtn = document.createElement("button");
     newBtn.innerText = "Delete";
-    
     newLi.append(newBtn);
     todoList.append(newLi);
     form.reset();
-    console.log(e);
+
+    savedToDos.push({ newToDo: newLi.innerText, isCompleted: false });
+    localStorage.setItem("todos", JSON.stringify(savedToDos));
 
     newLi.addEventListener("click", function(e){
-        e.target.style.textDecoration = "line-through";
+        let clickedListItem = e.target;
+
+        if (!clickedListItem.isCompleted) {
+            clickedListItem.style.textDecoration = "line-through";
+            clickedListItem.isCompleted = true;
+        } else {
+            clickedListItem.style.textDecoration = "none";
+            clickedListItem.isCompleted = false;
+        }
     });
 
     todoList.addEventListener("click", function(e) {      
@@ -23,10 +47,5 @@ form.addEventListener("submit", function(e) {
             e.target.parentElement.remove();
         }
     });
-
-    // const list = document.querySelector("ol#todo-list");
-
-    // localStorage.setItem("list", JSON.stringify(list));
-    // JSON.parse(localStorage.getItem("list"));
 });
 
